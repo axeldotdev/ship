@@ -48,7 +48,8 @@ Then you just need to run the installation command:
 php artisan ship:install
 ```
 
-You can remove the package when you're done.
+> [!TIP]
+> You can remove the package when you are done. It's just an installation command.
 
 ## Changelog
 
