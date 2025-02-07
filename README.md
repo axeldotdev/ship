@@ -24,7 +24,7 @@ He also made a demo of the new starter kits for Livewire, React and Vue. They ar
 Every files are dropped in our applications, **Ship** is just an installation command with some stubs.
 
 > [!WARNING]
-> **Ship** is not complete yet. It contains only backend stuff but I intend to propose frontend for the each stacks of the new starter kits when they'll be launched.
+> **Ship** is not complete yet. It contains only backend stuff but I intend to propose frontend for each stacks of the new starter kits when they'll be launched.
 
 ## Coming soon
 
