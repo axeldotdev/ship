@@ -2,14 +2,14 @@
 
 Taylor Otwell said at the 2025 Laracon EU "We must ship".
 
-He also made a demo of the new starter kits for Livewire, React and Vue. They are really nice but like Breeze they lack some features and it's normal, they are starter kits after all. So I build **Ship**.
+He also made a demo of the new starter kits for Livewire, React and Vue. They are really nice but like Breeze they lack some features and it's normal, they are starter kits after all. So I built **Ship**.
 
 **Ship** is a quick way to bootstrap our applications with configuration and features that we all need like Larastan, Rector, Content Security Policy, oAuth connection, Two way authentication, Sessions management, Tenant management for SaaS and basic configurations.
 
 **Ship** doesn't contains things like Horizon, Telescope, Solo, Pulse and others because those package are really simple to install, we just need to require them with Composer and use their installation command.
 
-> [!WARNING]
-> **Ship** is not complete yet. It contains only backend stuff but I intend to propose frontend for the each stacks of the new starter kits when they'll be launched.
+> [!NOTE]
+> **Ship** is a set of files and lines of code that I add to each of my projects manually... boring. It comes from other developers, other packages and me, it's a bunch of good stuff.
 
 ## What Ship can do for us?
 
@@ -22,6 +22,9 @@ He also made a demo of the new starter kits for Livewire, React and Vue. They ar
 - Install [Rector](https://github.com/rectorphp/rector) already configured
 
 Every files are dropped in our applications, **Ship** is just an installation command with some stubs.
+
+> [!WARNING]
+> **Ship** is not complete yet. It contains only backend stuff but I intend to propose frontend for the each stacks of the new starter kits when they'll be launched.
 
 ## Coming soon
 
