@@ -1,0 +1,46 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "axeldotdev/ship",
+    "description": "Ship allow you to install code your application needs.",
+    "keywords": [
+        "axeldotdev",
+        "ship",
+        "laravel",
+        "package"
+    ],
+    "homepage": "https://github.com/axeldotdev/ship",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Axel Charpentier",
+            "email": "axelcharpentier0@icloud.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^11.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Axeldotdev\\Ship\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Axeldotdev\\Ship\\ShipServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
