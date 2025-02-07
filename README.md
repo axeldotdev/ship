@@ -13,13 +13,13 @@ He also made a demo of the new starter kits for Livewire, React and Vue. They ar
 
 ## What Ship can do for us?
 
-- Configure our AppServiceProvider (immutable dates, vite prefetching, password rules, etc.)
-- Change the COOKIE_SESSION env variable to an uuid
-- Configure Content Security Policy with the Spatie package
-- Configure a sessions management feature for your users (like we have on Jetstream)
-- Configure a tenant management feature for your users (like we have on Jetstream but you can choose the name of the model)
-- Install Larastan already configured
-- Install Rector already configured
+- Configure our `AppServiceProvider` (immutable dates, vite prefetching, password rules, etc.)
+- Change the `COOKIE_SESSION` env variable to an uuid
+- Configure **Content Security Policy** with the [Spatie package](https://github.com/spatie/laravel-csp)
+- Configure a **sessions management** feature for your users (like we have on Jetstream)
+- Configure a **tenant management** feature for your users (like we have on Jetstream but you can choose the name of the model)
+- Install [Larastan](https://github.com/larastan/larastan) already configured
+- Install [Rector](https://github.com/rectorphp/rector) already configured
 
 Every files are dropped in our applications, **Ship** is just an installation command with some stubs.
 
