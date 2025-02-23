@@ -2,8 +2,6 @@
 
 namespace Axeldotdev\Ship\Actions;
 
-use Illuminate\Filesystem\Filesystem;
-
 class InstallTenantManagement extends Action
 {
     protected string $modelName;
@@ -33,7 +31,7 @@ class InstallTenantManagement extends Action
 
     protected function installHasTenantTrait(): void
     {
-        (new Filesystem)->ensureDirectoryExists(app_path('Concerns'));
+        $this->command->ensureDirectoryExists(app_path('Concerns'));
 
         $this->executeTask(
             task: fn () => copy(

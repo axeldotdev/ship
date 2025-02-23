@@ -2,8 +2,6 @@
 
 namespace Axeldotdev\Ship\Actions;
 
-use Illuminate\Filesystem\Filesystem;
-
 class InstallSessionsManagement extends Action
 {
     public function handle(): void
@@ -21,7 +19,7 @@ class InstallSessionsManagement extends Action
             failure: 'Could not copy the Session model stub',
         );
 
-        (new Filesystem)->ensureDirectoryExists(app_path('Concerns'));
+        $this->command->ensureDirectoryExists(app_path('Concerns'));
 
         $this->executeTask(
             task: fn () => copy(
@@ -46,11 +44,11 @@ class InstallSessionsManagement extends Action
 
         $this->executeTask(
             task: fn () => file_put_contents(app_path('Models/User.php'), $content),
-            success: 'Could not update the User model traits',
-            failure: 'User model updated successfully',
+            success: 'User model updated successfully',
+            failure: 'Could not update the User model traits',
         );
 
-        (new Filesystem)->ensureDirectoryExists(app_path('Support'));
+        $this->command->ensureDirectoryExists(app_path('Support'));
 
         $this->executeTask(
             task: fn () => copy(

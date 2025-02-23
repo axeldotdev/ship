@@ -2,8 +2,6 @@
 
 namespace Axeldotdev\Ship\Actions;
 
-use Illuminate\Filesystem\Filesystem;
-
 class InstallContentSecurityPolicy extends Action
 {
     public function handle(): void
@@ -18,13 +16,15 @@ class InstallContentSecurityPolicy extends Action
             failure: 'Could not install the spatie/laravel-csp package',
         );
 
+        $this->command->ensureDirectoryExists(base_path('config'));
+
         $this->executeTask(
             task: fn () => copy(__DIR__.'/../../stubs/commons/csp.php', config_path('csp.php')),
             success: 'CSP config copied successfully',
             failure: 'Could not copy the CSP config stub',
         );
 
-        (new Filesystem)->ensureDirectoryExists(app_path('Support'));
+        $this->command->ensureDirectoryExists(app_path('Support'));
 
         $this->executeTask(
             task: fn () => copy(
@@ -42,6 +42,19 @@ class InstallContentSecurityPolicy extends Action
             ),
             success: 'CspPolicy class copied successfully. You can now configure your CSP policy in this file.',
             failure: 'Could not copy the CspPolicy class stub',
+        );
+
+        $content = file_get_contents(base_path('bootstrap/app.php'));
+        $content = str_replace(
+            "->withMiddleware(function (Middleware \$middleware) {\n        //\n    })",
+            "->withMiddleware(function (Middleware \$middleware) {\n        \$middleware->web([\Spatie\Csp\AddCspHeaders::class]);\n    })",
+            $content,
+        );
+
+        $this->executeTask(
+            task: fn () => file_put_contents(base_path('bootstrap/app.php'), $content),
+            success: 'CSP headers middlweware added successfully',
+            failure: 'Could not add the CSP headers middleware',
         );
     }
 }

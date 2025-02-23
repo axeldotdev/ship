@@ -2,16 +2,10 @@
 
 namespace Axeldotdev\Ship\Commands;
 
-use Axeldotdev\Ship\Actions\ConfigureAppServiceProvider;
-use Axeldotdev\Ship\Actions\ConfigureSessionCookie;
-use Axeldotdev\Ship\Actions\InstallContentSecurityPolicy;
-use Axeldotdev\Ship\Actions\InstallLarastan;
-use Axeldotdev\Ship\Actions\InstallRector;
-use Axeldotdev\Ship\Actions\InstallSessionsManagement;
-use Axeldotdev\Ship\Actions\InstallSocialite;
-use Axeldotdev\Ship\Actions\InstallTenantManagement;
+use Axeldotdev\Ship\Actions;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Process\PhpExecutableFinder;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -31,6 +25,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     public $signature = 'ship:install {stack : The development stack that should be installed (livewire,react,vue)}
                                       {--tenant : Indicates if you want to install the tenant model}
                                       {--tenantModel= : The name of the tenant model}
+                                      {--delete-configs : Indicates if the default Laravel config files should be deleted}
                                       {--csp : Install the Content Security Policy package from Spatie}
                                       {--larastan : Install Larastan for static analysis}
                                       {--pest : Indicates if Pest should be installed}
@@ -41,15 +36,18 @@ class InstallCommand extends Command implements PromptsForMissingInput
     /** @var string */
     public $description = 'Install the things you need for your application.';
 
+    public Filesystem $filesystem;
+
     protected array $actions = [
-        ConfigureAppServiceProvider::class,
-        ConfigureSessionCookie::class,
-        InstallContentSecurityPolicy::class,
-        InstallLarastan::class,
-        InstallRector::class,
-        InstallSessionsManagement::class,
-        InstallSocialite::class,
-        InstallTenantManagement::class,
+        Actions\ConfigureAppServiceProvider::class,
+        Actions\ConfigureSessionCookie::class,
+        Actions\DeleteConfigFiles::class,
+        Actions\InstallContentSecurityPolicy::class,
+        Actions\InstallLarastan::class,
+        Actions\InstallRector::class,
+        Actions\InstallSessionsManagement::class,
+        Actions\InstallSocialite::class,
+        Actions\InstallTenantManagement::class,
     ];
 
     public function handle(): int
@@ -74,6 +72,11 @@ class InstallCommand extends Command implements PromptsForMissingInput
         InputInterface $input,
         OutputInterface $output,
     ): void {
+        $input->setOption('delete-configs', confirm(
+            label: 'Would you like to delete the default Laravel config files?',
+            default: true,
+        ));
+
         collect(multiselect(
             label: 'Would you like any optional features?',
             options: [
@@ -98,6 +101,16 @@ class InstallCommand extends Command implements PromptsForMissingInput
             options: ['Pest', 'PHPUnit'],
             default: 'Pest',
         ) === 'Pest');
+    }
+
+    public function ensureDirectoryExists(string $directory): void
+    {
+        $this->filesystem()->ensureDirectoryExists($directory);
+    }
+
+    public function filesystem(): Filesystem
+    {
+        return $this->filesystem ??= new Filesystem;
     }
 
     public function isUsingPest(): bool
