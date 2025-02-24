@@ -19,8 +19,8 @@
     ],
     "require": {
         "php": "^8.3",
-        "illuminate/contracts": "^11.0",
-        "spatie/laravel-package-tools": "^1.16"
+        "illuminate/contracts": "^12.0",
+        "spatie/laravel-package-tools": "^1.19"
     },
     "autoload": {
         "psr-4": {
@@ -41,6 +41,6 @@
             ]
         }
     },
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "prefer-stable": true
 }
