@@ -31,7 +31,7 @@ class ConfigureSessionCookie extends Action
 
         $this->executeTask(
             task: fn () => file_put_contents(base_path('.env.example'), $content),
-            success: 'Could not update the env SESSION_COOKIE variable',
+            success: 'SESSION_COOKIE variable updated successfully',
             failure: 'Could not update the env SESSION_COOKIE variable',
         );
     }

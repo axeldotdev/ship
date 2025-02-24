@@ -40,6 +40,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
     protected array $actions = [
         Actions\ConfigureAppServiceProvider::class,
+        Actions\ConfigureEnvExampleForProduction::class,
         Actions\ConfigureSessionCookie::class,
         Actions\DeleteConfigFiles::class,
         Actions\InstallContentSecurityPolicy::class,

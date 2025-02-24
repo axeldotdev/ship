@@ -21,6 +21,7 @@ class InstallTenantManagement extends Action
         $this->relationName = (string) str($this->variableName)->plural();
 
         $this->installTenantModel();
+        $this->installTenantFactory();
         $this->installHasTenantTrait();
         $this->updateUserModel();
         $this->installTenantMigration();
@@ -74,6 +75,26 @@ class InstallTenantManagement extends Action
             ),
             success: 'Tenant migration copied successfully',
             failure: 'Could not replace the Tenant model name',
+        );
+    }
+
+    protected function installTenantFactory(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/commons/TenantFactory.php',
+                database_path("factories/{$this->modelName}Factory.php"),
+            ),
+            failure: 'Could not copy the Tenant factory stub',
+        );
+
+        $content = file_get_contents(database_path("factories/{$this->modelName}Factory.php"));
+        $content = str_replace('Tenant', $this->modelName, $content);
+
+        $this->executeTask(
+            task: fn () => file_put_contents(database_path("factories/{$this->modelName}Factory.php"), $content),
+            success: 'Tenant factory copied successfully',
+            failure: 'Could not replace the Tenant factory name',
         );
     }
 
