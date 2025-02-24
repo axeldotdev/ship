@@ -2,10 +2,8 @@
 
 namespace App\Support;
 
-use Illuminate\Http\Request;
 use Spatie\Csp\Directive;
 use Spatie\Csp\Policies\Policy;
-use Symfony\Component\HttpFoundation\Response;
 
 class CspPolicy extends Policy
 {
@@ -41,6 +39,7 @@ class CspPolicy extends Policy
         return $this->addDirective(Directive::STYLE, [
             $this->appUrl,
             $this->appUrl.':5173',
+            'fonts.bunny.net',
             'fonts.googleapis.com',
             'unsafe-inline',
         ]);
@@ -53,7 +52,6 @@ class CspPolicy extends Policy
             ->addDirective(Directive::SCRIPT, [
                 $this->appUrl,
                 $this->appUrl.':5173',
-                'cdn.usefathom.com',
                 'unsafe-eval',
                 'unsafe-inline',
             ]);
@@ -67,18 +65,5 @@ class CspPolicy extends Policy
             'unsafe-inline',
             'data:',
         ]);
-    }
-
-    public function shouldBeApplied(Request $request, Response $response): bool
-    {
-        if (
-            (! is_null($request->route()) && str($request->route()->uri)->startsWith('tools/'))
-            || $response->isServerError()
-            || $response->isClientError()
-        ) {
-            return false;
-        }
-
-        return parent::shouldBeApplied($request, $response);
     }
 }

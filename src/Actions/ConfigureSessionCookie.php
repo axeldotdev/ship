@@ -11,6 +11,13 @@ class ConfigureSessionCookie extends Action
         $uuid = Str::uuid();
 
         $content = file_get_contents(base_path('.env'));
+
+        if (str_contains($content, 'SESSION_COOKIE')) {
+            $this->command->info('SESSION_COOKIE variable already set');
+
+            return;
+        }
+
         $content = str_replace(
             'SESSION_DOMAIN=null',
             "SESSION_DOMAIN=null\nSESSION_COOKIE={$uuid}",

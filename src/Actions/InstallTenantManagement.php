@@ -121,9 +121,17 @@ class InstallTenantManagement extends Action
     protected function updateUserMigration(): void
     {
         $content = file_get_contents(database_path('migrations/0001_01_01_000000_create_users_table.php'));
+
+        if (str_contains($content, "current_{$this->variableName}_id")) {
+            $this->command->info('User migration already updated');
+
+            return;
+        }
+
         $content = str_replace(
             '$table->rememberToken();',
-            "\$table->rememberToken();\n            \$table->foreignId('current_{$this->variableName}_id')->nullable();",
+            "\$table->rememberToken();
+            \$table->foreignId('current_{$this->variableName}_id')->nullable();",
             $content,
         );
 
@@ -141,13 +149,16 @@ class InstallTenantManagement extends Action
     {
         $content = file_get_contents(app_path('Models/User.php'));
         $content = str_replace(
-            "namespace App\Models;\n\n",
-            "namespace App\Models;\n\nuse App\Concerns\Has{$this->modelName};\n",
+            'use Notifiable',
+            "use Has{$this->modelName};
+    use Notifiable",
             $content,
         );
         $content = str_replace(
-            'HasFactory, Notifiable',
-            "Has{$this->modelName}, HasFactory, Notifiable",
+            "namespace App\Models;",
+            "namespace App\Models;
+
+use App\Concerns\Has{$this->modelName};",
             $content,
         );
 

@@ -32,13 +32,14 @@ class InstallSessionsManagement extends Action
 
         $content = file_get_contents(app_path('Models/User.php'));
         $content = str_replace(
-            "namespace App\Models;\n\n",
-            "namespace App\Models;\n\nuse App\Concerns\HasSession;\n",
+            'use Notifiable;',
+            'use HasSession;
+    use Notifiable;',
             $content,
         );
         $content = str_replace(
-            'HasFactory, Notifiable',
-            'HasSession, HasFactory, Notifiable',
+            "namespace App\Models;\n\n",
+            "namespace App\Models;\n\nuse App\Concerns\HasSession;\n",
             $content,
         );
 
