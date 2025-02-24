@@ -20,17 +20,78 @@ class InstallTenantManagement extends Action
         $this->variableName = (string) str($this->modelName)->lower();
         $this->relationName = (string) str($this->variableName)->plural();
 
-        $this->installTenantModel();
-        $this->installTenantFactory();
-        $this->installHasTenantTrait();
-        $this->updateUserModel();
-        $this->installTenantMigration();
+        $this->publishFactory();
+        $this->publishModel();
+        $this->publishMigration();
+        $this->publishTrait();
         $this->updateUserMigration();
+        $this->updateUserModel();
 
         // TODO: Add views stubs for the selected stack
     }
 
-    protected function installHasTenantTrait(): void
+    protected function publishFactory(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/commons/TenantFactory.php',
+                database_path("factories/{$this->modelName}Factory.php"),
+            ),
+            failure: 'Could not copy the Tenant factory stub',
+        );
+
+        $this->replaceInFile(
+            file: database_path("factories/{$this->modelName}Factory.php"),
+            replacements: [
+                'Tenant' => $this->modelName,
+            ],
+            success: 'Tenant factory copied successfully',
+            failure: 'Could not replace the Tenant factory name',
+        );
+    }
+
+    protected function publishMigration(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/commons/0001_01_01_000003_create_tenants_table.php',
+                database_path("migrations/0001_01_01_000003_create_{$this->relationName}_table.php"),
+            ),
+            failure: 'Could not copy the Tenant migration stub',
+        );
+
+        $this->replaceInFile(
+            file: database_path("migrations/0001_01_01_000003_create_{$this->relationName}_table.php"),
+            replacements: [
+                'tenant' => $this->variableName,
+                'tenants' => $this->relationName,
+            ],
+            success: 'Tenant migration copied successfully',
+            failure: 'Could not replace the Tenant model name',
+        );
+    }
+
+    protected function publishModel(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/commons/Tenant.php',
+                app_path("Models/{$this->modelName}.php"),
+            ),
+            failure: 'Could not copy the Tenant model stub',
+        );
+
+        $this->replaceInFile(
+            file: app_path("Models/{$this->modelName}.php"),
+            replacements: [
+                'Tenant' => $this->modelName,
+            ],
+            success: 'Tenant model copied successfully',
+            failure: 'Could not replace the Tenant model name',
+        );
+    }
+
+    protected function publishTrait(): void
     {
         $this->command->ensureDirectoryExists(app_path('Concerns'));
 
@@ -42,104 +103,26 @@ class InstallTenantManagement extends Action
             failure: 'Could not copy the HasTenant trait stub',
         );
 
-        $content = file_get_contents(app_path("Concerns/Has{$this->modelName}.php"));
-        $content = str_replace('Tenant', $this->modelName, $content);
-        $content = str_replace('tenant', $this->variableName, $content);
-        $content = str_replace('tenants', $this->relationName, $content);
-
-        $this->executeTask(
-            task: fn () => file_put_contents(app_path("Concerns/Has{$this->modelName}.php"), $content),
+        $this->replaceInFile(
+            file: app_path("Concerns/Has{$this->modelName}.php"),
+            replacements: [
+                'Tenant' => $this->modelName,
+                'tenant' => $this->variableName,
+                'tenants' => $this->relationName,
+            ],
             success: 'HasTenant trait copied successfully',
-            failure: 'Could not replace the Tenant model name',
-        );
-    }
-
-    protected function installTenantMigration(): void
-    {
-        $this->executeTask(
-            task: fn () => copy(
-                __DIR__.'/../../stubs/commons/0001_01_01_000003_create_tenants_table.php',
-                database_path("migrations/0001_01_01_000003_create_{$this->relationName}_table.php"),
-            ),
-            failure: 'Could not copy the Tenant migration stub',
-        );
-
-        $content = file_get_contents(database_path("migrations/0001_01_01_000003_create_{$this->relationName}_table.php"));
-        $content = str_replace('tenant', $this->variableName, $content);
-        $content = str_replace('tenants', $this->relationName, $content);
-
-        $this->executeTask(
-            task: fn () => file_put_contents(
-                database_path("migrations/0001_01_01_000003_create_{$this->relationName}_table.php"),
-                $content,
-            ),
-            success: 'Tenant migration copied successfully',
-            failure: 'Could not replace the Tenant model name',
-        );
-    }
-
-    protected function installTenantFactory(): void
-    {
-        $this->executeTask(
-            task: fn () => copy(
-                __DIR__.'/../../stubs/commons/TenantFactory.php',
-                database_path("factories/{$this->modelName}Factory.php"),
-            ),
-            failure: 'Could not copy the Tenant factory stub',
-        );
-
-        $content = file_get_contents(database_path("factories/{$this->modelName}Factory.php"));
-        $content = str_replace('Tenant', $this->modelName, $content);
-
-        $this->executeTask(
-            task: fn () => file_put_contents(database_path("factories/{$this->modelName}Factory.php"), $content),
-            success: 'Tenant factory copied successfully',
-            failure: 'Could not replace the Tenant factory name',
-        );
-    }
-
-    protected function installTenantModel(): void
-    {
-        $this->executeTask(
-            task: fn () => copy(
-                __DIR__.'/../../stubs/commons/Tenant.php',
-                app_path("Models/{$this->modelName}.php"),
-            ),
-            failure: 'Could not copy the Tenant model stub',
-        );
-
-        $content = file_get_contents(app_path("Models/{$this->modelName}.php"));
-        $content = str_replace('Tenant', $this->modelName, $content);
-
-        $this->executeTask(
-            task: fn () => file_put_contents(app_path("Models/{$this->modelName}.php"), $content),
-            success: 'Tenant model copied successfully',
             failure: 'Could not replace the Tenant model name',
         );
     }
 
     protected function updateUserMigration(): void
     {
-        $content = file_get_contents(database_path('migrations/0001_01_01_000000_create_users_table.php'));
-
-        if (str_contains($content, "current_{$this->variableName}_id")) {
-            $this->command->info('User migration already updated');
-
-            return;
-        }
-
-        $content = str_replace(
-            '$table->rememberToken();',
-            "\$table->rememberToken();
+        $this->replaceInFile(
+            file: database_path('migrations/0001_01_01_000000_create_users_table.php'),
+            replacements: [
+                '$table->rememberToken();' => "\$table->rememberToken();
             \$table->foreignId('current_{$this->variableName}_id')->nullable();",
-            $content,
-        );
-
-        $this->executeTask(
-            task: fn () => file_put_contents(
-                database_path('migrations/0001_01_01_000000_create_users_table.php'),
-                $content,
-            ),
+            ],
             success: 'User migration updated successfully',
             failure: 'Could not update the User migration',
         );
@@ -147,23 +130,15 @@ class InstallTenantManagement extends Action
 
     protected function updateUserModel(): void
     {
-        $content = file_get_contents(app_path('Models/User.php'));
-        $content = str_replace(
-            'use Notifiable',
-            "use Has{$this->modelName};
+        $this->replaceInFile(
+            file: app_path('Models/User.php'),
+            replacements: [
+                'use Notifiable' => "use Has{$this->modelName};
     use Notifiable",
-            $content,
-        );
-        $content = str_replace(
-            "namespace App\Models;",
-            "namespace App\Models;
+                'namespace App\Models;' => "namespace App\Models;
 
 use App\Concerns\Has{$this->modelName};",
-            $content,
-        );
-
-        $this->executeTask(
-            task: fn () => file_put_contents(app_path('Models/User.php'), $content),
+            ],
             success: 'User model updated successfully',
             failure: 'Could not update the User model traits',
         );

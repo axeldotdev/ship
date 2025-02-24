@@ -10,34 +10,19 @@ class ConfigureSessionCookie extends Action
     {
         $uuid = Str::uuid();
 
-        $content = file_get_contents(base_path('.env'));
-
-        if (str_contains($content, 'SESSION_COOKIE')) {
-            $this->command->info('SESSION_COOKIE variable already set');
-
-            return;
-        }
-
-        $content = str_replace(
-            'SESSION_DOMAIN=null',
-            "SESSION_DOMAIN=null\nSESSION_COOKIE={$uuid}",
-            $content,
-        );
-
-        $this->executeTask(
-            task: fn () => file_put_contents(base_path('.env'), $content),
+        $this->replaceInFile(
+            file: base_path('.env'),
+            replacements: [
+                'SESSION_DOMAIN=null' => "SESSION_DOMAIN=null\nSESSION_COOKIE={$uuid}",
+            ],
             failure: 'Could not update the env SESSION_COOKIE variable',
         );
 
-        $content = file_get_contents(base_path('.env.example'));
-        $content = str_replace(
-            'SESSION_DOMAIN=null',
-            "SESSION_DOMAIN=null\nSESSION_COOKIE={$uuid}",
-            $content,
-        );
-
-        $this->executeTask(
-            task: fn () => file_put_contents(base_path('.env.example'), $content),
+        $this->replaceInFile(
+            file: base_path('.env.example'),
+            replacements: [
+                'SESSION_DOMAIN=null' => "SESSION_DOMAIN=null\nSESSION_COOKIE={$uuid}",
+            ],
             success: 'SESSION_COOKIE variable updated successfully',
             failure: 'Could not update the env SESSION_COOKIE variable',
         );

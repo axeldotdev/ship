@@ -23,4 +23,23 @@ abstract class Action
             $this->command->info($success);
         }
     }
+
+    protected function replaceInFile(
+        string $file,
+        array $replacements,
+        ?string $success = null,
+        string $failure = 'Failed',
+    ): void {
+        $content = file_get_contents($file);
+
+        foreach ($replacements as $search => $replace) {
+            $content = str_replace($search, $replace, $content);
+        }
+
+        $this->executeTask(
+            task: fn () => file_put_contents($file, $content),
+            success: $success,
+            failure: $failure,
+        );
+    }
 }
