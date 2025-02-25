@@ -10,13 +10,17 @@ class InstallContentSecurityPolicy extends Action
             return;
         }
 
-        $this->configureMiddleware();
+        match ($this->command->argument('stack')) {
+            'livewire' => $this->configureLivewireMiddleware(),
+            'react', 'vue' => $this->configureInertiaMiddleware(),
+        };
+
         $this->publishConfig();
         $this->publishPolicy();
         $this->installPackage();
     }
 
-    protected function configureMiddleware(): void
+    protected function configureLivewireMiddleware(): void
     {
         $this->replaceInFile(
             file: base_path('bootstrap/app.php'),
@@ -24,10 +28,23 @@ class InstallContentSecurityPolicy extends Action
                 '->withMiddleware(function (Middleware $middleware) {
         //
     })' => '->withMiddleware(function (Middleware $middleware) {
-        $middleware->web([
+        $middleware->web(append: [
             \Spatie\Csp\AddCspHeaders::class,
         ]);
     })',
+            ],
+            success: 'CSP headers middlweware added successfully',
+            failure: 'Could not add the CSP headers middleware',
+        );
+    }
+
+    protected function configureInertiaMiddleware(): void
+    {
+        $this->replaceInFile(
+            file: base_path('bootstrap/app.php'),
+            replacements: [
+                'AddLinkHeadersForPreloadedAssets::class,' => 'AddLinkHeadersForPreloadedAssets::class,
+            \Spatie\Csp\AddCspHeaders::class,',
             ],
             success: 'CSP headers middlweware added successfully',
             failure: 'Could not add the CSP headers middleware',

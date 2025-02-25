@@ -12,6 +12,18 @@ class InstallApiManagement extends Action
 
         $this->command->runArtisanCommand(['install:api']);
 
+        $this->publishCommand();
+        $this->publishTrait();
+
+        match ($this->command->argument('stack')) {
+            'livewire' => $this->publishLivewireViews(),
+            'react' => $this->publishReactViews(),
+            'vue' => $this->publishVueViews(),
+        };
+    }
+
+    protected function publishCommand(): void
+    {
         $this->replaceInFile(
             file: base_path('routes/console.php'),
             replacements: [
@@ -21,25 +33,6 @@ Schedule::command('sanctum:prune-expired')->daily();",
             success: 'Sanctum prune command added successfully',
             failure: 'Could not add the Sanctum prune command',
         );
-
-        $this->replaceInFile(
-            file: app_path('Models/User.php'),
-            replacements: [
-                'use Notifiable;' => 'use HasApiTokens;
-    use Notifiable;',
-                'namespace App\Models;' => 'namespace App\Models;
-
-use Laravel\Sanctum\HasApiTokens;',
-            ],
-            success: 'User model updated successfully',
-            failure: 'Could not update the User model traits',
-        );
-
-        match ($this->command->argument('stack')) {
-            'livewire' => $this->publishLivewireViews(),
-            'react' => $this->publishReactViews(),
-            'vue' => $this->publishVueViews(),
-        };
     }
 
     protected function publishLivewireViews(): void
@@ -76,5 +69,68 @@ use Laravel\Sanctum\HasApiTokens;',
 
     protected function publishReactViews(): void {}
 
-    protected function publishVueViews(): void {}
+    protected function publishVueViews(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/vue/ApiTokenController.php',
+                app_path('Http/Controllers/Settings/ApiTokenController.php'),
+            ),
+            success: 'settings api tokens controller copied successfully',
+            failure: 'Could not copy the settings api tokens controller',
+        );
+
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/vue/ApiTokens.vue',
+                resource_path('js/pages/settings/ApiTokens.vue'),
+            ),
+            success: 'settings api tokens view copied successfully',
+            failure: 'Could not copy the settings api tokens view',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
+    Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
+    Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.delete');",
+            ],
+            success: 'settings api tokens route added successfully',
+            failure: 'Could not add the settings api tokens route',
+        );
+
+        $this->replaceInFile(
+            file: resource_path('js/layouts/settings/Layout.vue'),
+            replacements: [
+                "href: '/settings/password',
+    }," => "href: '/settings/password',
+    },
+    {
+        title: 'API tokens',
+        href: '/settings/api-tokens',
+    },",
+            ],
+            success: 'settings layout updated successfully',
+            failure: 'Could not update the settings layout',
+        );
+    }
+
+    protected function publishTrait(): void
+    {
+        $this->replaceInFile(
+            file: app_path('Models/User.php'),
+            replacements: [
+                'use Notifiable;' => 'use HasApiTokens;
+    use Notifiable;',
+                'namespace App\Models;' => 'namespace App\Models;
+
+use Laravel\Sanctum\HasApiTokens;',
+            ],
+            success: 'User model updated successfully',
+            failure: 'Could not update the User model traits',
+        );
+    }
 }
