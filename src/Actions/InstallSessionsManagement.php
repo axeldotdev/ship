@@ -114,5 +114,51 @@ use App\Concerns\HasSession;',
 
     protected function publishReactViews(): void {}
 
-    protected function publishVueViews(): void {}
+    protected function publishVueViews(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/vue/SessionController.php',
+                app_path('Http/Controllers/Settings/SessionController.php'),
+            ),
+            success: 'settings sessions controller copied successfully',
+            failure: 'Could not copy the settings sessions controller',
+        );
+
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/vue/Sessions.vue',
+                resource_path('js/pages/settings/Sessions.vue'),
+            ),
+            success: 'settings sessions view copied successfully',
+            failure: 'Could not copy the settings sessions view',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
+    Route::put('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.delete');",
+            ],
+            success: 'settings sessions route added successfully',
+            failure: 'Could not add the settings sessions route',
+        );
+
+        $this->replaceInFile(
+            file: resource_path('js/layouts/settings/Layout.vue'),
+            replacements: [
+                "href: '/settings/password',
+    }," => "href: '/settings/password',
+    },
+    {
+        title: 'Sessions',
+        href: '/settings/sessions',
+    },",
+            ],
+            success: 'settings layout updated successfully',
+            failure: 'Could not update the settings layout',
+        );
+    }
 }
