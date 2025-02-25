@@ -17,6 +17,7 @@ He also made a demo of the new starter kits for Livewire, React and Vue. They ar
 - Change the `COOKIE_SESSION` env variable to an uuid
 - Remove Laravel config files (optionable)
 - Configure **Content Security Policy** with the [Spatie package](https://github.com/spatie/laravel-csp)
+- Configure a **api management** feature with Sanctum for your users (like we have on Jetstream)
 - Configure a **sessions management** feature for your users (like we have on Jetstream)
 - Configure a **tenant management** feature for your users (like we have on Jetstream but you can choose the name of the model)
 - Install [Larastan](https://github.com/larastan/larastan) already configured
