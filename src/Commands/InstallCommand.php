@@ -45,6 +45,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         Actions\ConfigureAppLogoName::class,
         Actions\ConfigureSessionCookie::class,
         Actions\DeleteConfigFiles::class,
+        Actions\InstallInertiaMiddlewareFlash::class,
         Actions\InstallApiManagement::class,
         Actions\InstallContentSecurityPolicy::class,
         Actions\InstallLarastan::class,

@@ -15,7 +15,17 @@ class SessionController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('settings/Sessions', [
-            'sessions' => $request->user()->sessions,
+            'sessions' => $request->user()->sessions->map(fn ($session) => [
+                'id' => $session->id,
+                'agent' => [
+                    'is_desktop' => $session->agent->isDesktop(),
+                    'platform' => $session->agent->platform(),
+                    'browser' => $session->agent->browser(),
+                ],
+                'ip_address' => $session->ip_address,
+                'is_current_device' => $session->is_current_device,
+                'last_active' => $session->lastActive,
+            ])->toArray(),
             'status' => $request->session()->get('status'),
         ]);
     }

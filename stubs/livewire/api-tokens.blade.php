@@ -67,7 +67,7 @@ new class extends Component
 <section class="w-full">
     @include('partials.settings-heading')
 
-    <x-settings.layout heading="Manage API tokens" subheading="API tokens allow third-party services to authenticate with our application on your behalf.">
+    <x-settings.layout heading="Create API tokens" subheading="API tokens allow third-party services to authenticate with our application on your behalf.">
         <form wire:submit="createApiToken" class="mt-6 space-y-6">
             <flux:input wire:model="name" id="api_token_name" label="{{ __('Token name') }}" name="name" required />
 
@@ -92,7 +92,7 @@ new class extends Component
                     </flux:heading>
 
                     <flux:subheading>
-                        {{ __('Please copy your new API token. For your security, it won\'t be shown again.') }}
+                        {{ __("Please copy your new API token. For your security, it won't be shown again.") }}
                     </flux:subheading>
                 </div>
 
@@ -111,6 +111,7 @@ new class extends Component
                         {{ __('You may delete any of your existing tokens if they are no longer needed.') }}
                     </flux:subheading>
                 </div>
+
                 <div class="space-y-6">
                     @foreach ($this->user->tokens->sortBy('name') as $token)
                         <div class="flex items-center justify-between">

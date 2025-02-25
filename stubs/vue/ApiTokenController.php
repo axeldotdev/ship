@@ -14,15 +14,16 @@ class ApiTokenController extends Controller
     {
         return Inertia::render('settings/ApiTokens', [
             'status' => $request->session()->get('status'),
-            'tokens' => $request->user()->tokens->map(function ($token) {
-                return $token->toArray() + [
-                    'last_used_ago' => optional($token->last_used_at)->diffForHumans(),
-                ];
-            }),
+            'tokens' => $request->user()->tokens()->latest()->get()->map(fn ($token) => [
+                'id' => $token->id,
+                'name' => $token->name,
+                'last_used_ago' => optional($token->last_used_at)->diffForHumans(),
+            ]),
+            'status' => $request->session()->get('status'),
         ]);
     }
 
-    public function store(Request $request): Response
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
