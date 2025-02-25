@@ -6,15 +6,13 @@ class ConfigureAppServiceProvider extends Action
 {
     public function handle(): void
     {
-        $this->executeTask(
-            task: fn () => copy(
-                __DIR__.'/../../stubs/commons/AppServiceProvider.php',
-                app_path('Providers/AppServiceProvider.php'),
-            ),
-            success: 'AppServiceProvider copied successfully',
-            failure: 'Could not copy the AppServiceProvider stub',
-        );
+        $this->cleanUserModel();
+        $this->publishAppServiceProvider();
+        $this->publishConsoleRoutes();
+    }
 
+    protected function cleanUserModel(): void
+    {
         $this->replaceInFile(
             file: app_path('Models/User.php'),
             replacements: [
@@ -37,6 +35,30 @@ class ConfigureAppServiceProvider extends Action
             ],
             success: 'User model updated successfully',
             failure: 'Could not update the User model traits',
+        );
+    }
+
+    protected function publishAppServiceProvider(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/commons/AppServiceProvider.php',
+                app_path('Providers/AppServiceProvider.php'),
+            ),
+            success: 'AppServiceProvider copied successfully',
+            failure: 'Could not copy the AppServiceProvider stub',
+        );
+    }
+
+    protected function publishConsoleRoutes(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/commons/console.php',
+                app_path('routes/console.php'),
+            ),
+            success: 'Console routes copied successfully',
+            failure: 'Could not copy the console routes stub',
         );
     }
 }

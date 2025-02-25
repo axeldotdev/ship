@@ -26,6 +26,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                                       {--tenant : Indicates if you want to install the tenant model}
                                       {--tenantModel= : The name of the tenant model}
                                       {--delete-configs : Indicates if the default Laravel config files should be deleted}
+                                      {--api : Install the API management resources and Sanctum}
                                       {--csp : Install the Content Security Policy package from Spatie}
                                       {--larastan : Install Larastan for static analysis}
                                       {--pest : Indicates if Pest should be installed}
@@ -43,6 +44,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         Actions\ConfigureEnvExampleForProduction::class,
         Actions\ConfigureSessionCookie::class,
         Actions\DeleteConfigFiles::class,
+        Actions\InstallApiManagement::class,
         Actions\InstallContentSecurityPolicy::class,
         Actions\InstallLarastan::class,
         Actions\InstallRector::class,
@@ -81,10 +83,12 @@ class InstallCommand extends Command implements PromptsForMissingInput
         collect(multiselect(
             label: 'Would you like any optional features?',
             options: [
+                'api' => 'API management',
                 'csp' => 'Content Security Policy (with Spatie)',
                 'larastan' => 'Larastan',
                 'rector' => 'Rector',
                 'sessions' => 'Sessions management',
+                'socialite' => 'Socialite (SSO)',
                 'tenant' => 'Tenant model',
             ],
         ))->each(fn ($option) => $input->setOption($option, true));
@@ -168,6 +172,17 @@ class InstallCommand extends Command implements PromptsForMissingInput
             ->run(function ($type, $output) {
                 $this->output->write($output);
             });
+    }
+
+    public function runArtisanCommand(array $command): void
+    {
+        if (confirm('New database migrations were added. Would you like to re-run your migrations?', true)) {
+            (new Process([$this->phpBinary(), 'artisan', ...$command], base_path()))
+                ->setTimeout(null)
+                ->run(function ($type, $output) {
+                    $this->output->write($output);
+                });
+        }
     }
 
     public function runCommands(array $commands): void
