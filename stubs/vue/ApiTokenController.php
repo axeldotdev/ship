@@ -19,7 +19,6 @@ class ApiTokenController extends Controller
                 'name' => $token->name,
                 'last_used_ago' => optional($token->last_used_at)->diffForHumans(),
             ]),
-            'status' => $request->session()->get('status'),
         ]);
     }
 
