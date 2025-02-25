@@ -15,6 +15,7 @@ class SessionController extends Controller
     public function index(Request $request): Response
     {
         return Inertia::render('settings/Sessions', [
+            'sessions' => $request->user()->sessions,
             'status' => $request->session()->get('status'),
         ]);
     }
