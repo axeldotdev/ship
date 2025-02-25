@@ -32,7 +32,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-const passwordInput = ref<HTMLInputElement | null>(null);
 const displayingToken = ref(false);
 const deletingToken = ref(false);
 const apiTokenBeingDeleted = ref<number | null>(null);
@@ -168,7 +167,7 @@ const closeModal = () => {
                                     <Label for="password" class="sr-only">
                                         Password
                                     </Label>
-                                    <Input v-model="deleteForm.password" id="password" type="password" name="password" ref="passwordInput" placeholder="Password" required/>
+                                    <Input v-model="deleteForm.password" id="password" type="password" name="password" placeholder="Password" required/>
                                     <InputError :message="deleteForm.errors.password"/>
                                 </div>
 

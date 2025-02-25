@@ -39,7 +39,6 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-const passwordInput = ref<HTMLInputElement | null>(null);
 const sessionsDeletion = ref(false);
 
 const form = useForm({
@@ -133,7 +132,7 @@ const closeModal = () => {
                                 <Label for="password" class="sr-only">
                                     Password
                                 </Label>
-                                <Input v-model="form.password" id="password" type="password" name="password" ref="passwordInput" placeholder="Password" required/>
+                                <Input v-model="form.password" id="password" type="password" name="password" placeholder="Password" required/>
                                 <InputError :message="form.errors.password"/>
                             </div>
 
