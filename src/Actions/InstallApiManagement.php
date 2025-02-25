@@ -96,7 +96,7 @@ Schedule::command('sanctum:prune-expired')->daily();",
 
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
-    Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.delete');",
+    Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');",
             ],
             success: 'settings api tokens route added successfully',
             failure: 'Could not add the settings api tokens route',
