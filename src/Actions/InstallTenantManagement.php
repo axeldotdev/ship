@@ -27,6 +27,10 @@ class InstallTenantManagement extends Action
         $this->updateUserMigration();
         $this->updateUserModel();
 
+        if ($this->command->argument('stack') === 'no-starter') {
+            return;
+        }
+
         // TODO: Add views stubs for the selected stack
     }
 

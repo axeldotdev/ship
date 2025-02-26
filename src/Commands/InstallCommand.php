@@ -22,7 +22,7 @@ use function Laravel\Prompts\text;
 class InstallCommand extends Command implements PromptsForMissingInput
 {
     /** @var string */
-    public $signature = 'ship:install {stack : The development stack that should be installed (livewire,react,vue)}
+    public $signature = 'ship:install {stack : The development stack that should be installed (no-starter,livewire,react,vue)}
                                       {--tenant : Indicates if you want to install the tenant model}
                                       {--tenantModel= : The name of the tenant model}
                                       {--delete-configs : Indicates if the default Laravel config files should be deleted}
@@ -57,8 +57,8 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
     public function handle(): int
     {
-        if (! in_array($this->argument('stack'), ['livewire', 'react', 'vue'])) {
-            $this->error('Invalid stack. Supported stacks are [livewire], [react] and [vue].');
+        if (! in_array($this->argument('stack'), ['no-starter', 'livewire', 'react', 'vue'])) {
+            $this->error('Invalid stack. Supported stacks are [no-starter], [livewire], [react] and [vue].');
 
             return Command::FAILURE;
         }
@@ -140,6 +140,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
             'stack' => fn () => select(
                 label: 'Which stack would you like to install?',
                 options: [
+                    'no-starter' => 'No starter kit',
                     'livewire' => 'Livewire',
                     'react' => 'React',
                     'vue' => 'Vue',

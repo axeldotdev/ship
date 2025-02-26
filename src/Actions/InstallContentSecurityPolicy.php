@@ -11,7 +11,7 @@ class InstallContentSecurityPolicy extends Action
         }
 
         match ($this->command->argument('stack')) {
-            'livewire' => $this->configureLivewireMiddleware(),
+            'no-starter', 'livewire' => $this->configureLivewireMiddleware(),
             'react', 'vue' => $this->configureInertiaMiddleware(),
         };
 
