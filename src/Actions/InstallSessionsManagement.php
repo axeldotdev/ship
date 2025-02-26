@@ -14,6 +14,10 @@ class InstallSessionsManagement extends Action
         $this->publishModel();
         $this->publishTrait();
 
+        if ($this->command->argument('stack') === 'no-starter') {
+            return;
+        }
+
         match ($this->command->argument('stack')) {
             'livewire' => $this->publishLivewireViews(),
             'react' => $this->publishReactViews(),

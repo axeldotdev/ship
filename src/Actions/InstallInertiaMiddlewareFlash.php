@@ -6,7 +6,7 @@ class InstallInertiaMiddlewareFlash extends Action
 {
     public function handle(): void
     {
-        if (! $this->command->argument('stack') === 'livewire') {
+        if (in_array($this->command->argument('stack'), ['no-starter', 'livewire'])) {
             return;
         }
 

@@ -6,6 +6,10 @@ class ConfigureAppLogoName extends Action
 {
     public function handle(): void
     {
+        if ($this->command->argument('stack') === 'no-starter') {
+            return;
+        }
+
         match ($this->command->argument('stack')) {
             'livewire' => $this->configureLivewireComponent(),
             'react' => $this->configureReactComponent(),
