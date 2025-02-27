@@ -159,7 +159,7 @@ use App\Concerns\HasSession;',
         );
 
         $this->replaceInFile(
-            file: resource_path('js/layouts/settings/Layout.vue'),
+            file: resource_path('js/layouts/settings/layout.tsx'),
             replacements: [
                 "url: '/settings/password',
         icon: null,

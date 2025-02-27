@@ -84,7 +84,7 @@ Schedule::command('sanctum:prune-expired')->daily();",
 
         $this->executeTask(
             task: fn () => copy(
-                __DIR__.'/../../stubs/react/api-tokens.vue',
+                __DIR__.'/../../stubs/react/api-tokens.tsx',
                 resource_path('js/pages/settings/api-tokens.tsx'),
             ),
             success: 'settings api tokens view copied successfully',
@@ -115,7 +115,7 @@ Schedule::command('sanctum:prune-expired')->daily();",
         );
 
         $this->replaceInFile(
-            file: resource_path('js/layouts/settings/Layout.vue'),
+            file: resource_path('js/layouts/settings/layout.tsx'),
             replacements: [
                 "url: '/settings/password',
         icon: null,
