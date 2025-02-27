@@ -129,7 +129,7 @@ use App\Concerns\HasSession;',
 
         $this->executeTask(
             task: fn () => copy(
-                __DIR__.'/../../stubs/react/sessions.vue',
+                __DIR__.'/../../stubs/react/sessions.tsx',
                 resource_path('js/pages/settings/sessions.tsx'),
             ),
             success: 'settings sessions view copied successfully',
