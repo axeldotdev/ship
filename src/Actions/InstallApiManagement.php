@@ -71,7 +71,67 @@ Schedule::command('sanctum:prune-expired')->daily();",
         );
     }
 
-    protected function publishReactViews(): void {}
+    protected function publishReactViews(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/react/ApiTokenController.php',
+                app_path('Http/Controllers/Settings/ApiTokenController.php'),
+            ),
+            success: 'settings api tokens controller copied successfully',
+            failure: 'Could not copy the settings api tokens controller',
+        );
+
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/react/api-tokens.vue',
+                resource_path('js/pages/settings/api-tokens.tsx'),
+            ),
+            success: 'settings api tokens view copied successfully',
+            failure: 'Could not copy the settings api tokens view',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
+    Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
+    Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');",
+            ],
+            success: 'settings api tokens route added successfully',
+            failure: 'Could not add the settings api tokens route',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
+    use App\Http\Controllers\Settings\ApiTokenController;",
+            ],
+            success: 'settings api tokens route added successfully',
+            failure: 'Could not add the settings api tokens route',
+        );
+
+        $this->replaceInFile(
+            file: resource_path('js/layouts/settings/Layout.vue'),
+            replacements: [
+                "url: '/settings/password',
+        icon: null,
+    }," => "url: '/settings/password',
+        icon: null,
+    },
+    {
+        title: 'API tokens',
+        url: '/settings/api-tokens',
+        icon: null,
+    },",
+            ],
+            success: 'settings layout updated successfully',
+            failure: 'Could not update the settings layout',
+        );
+    }
 
     protected function publishVueViews(): void
     {

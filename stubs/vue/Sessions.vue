@@ -15,7 +15,6 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem } from '@/types';
 
 interface Props {
-    className?: string;
     status?: string;
     sessions: Array<{
         id: number;
@@ -104,7 +103,7 @@ const closeModal = () => {
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <Button @click="confirmSessionsDeletion">
+                    <Button @click="confirmSessionsDeletion" type="button">
                         Log Out Other Browser Sessions
                     </Button>
 
@@ -117,7 +116,7 @@ const closeModal = () => {
 
                 <Dialog v-model:open="sessionsDeletion">
                     <DialogContent>
-                        <form class="space-y-6" @submit.prevent="logoutSessions">
+                        <form @submit.prevent="logoutSessions" class="space-y-6">
                             <DialogHeader class="space-y-3">
                                 <DialogTitle>
                                     Are you sure you want to logout of other sessions?
@@ -138,7 +137,7 @@ const closeModal = () => {
 
                             <DialogFooter>
                                 <DialogClose as-child>
-                                    <Button variant="secondary" @click="closeModal">
+                                    <Button @click="closeModal" variant="secondary" type="button">
                                         Cancel
                                     </Button>
                                 </DialogClose>
