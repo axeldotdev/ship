@@ -38,6 +38,8 @@ new class extends Component
 
         $this->modal('display-api-token')->show();
 
+        $this->reset('name');
+
         $this->dispatch('created');
     }
 

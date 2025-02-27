@@ -55,7 +55,7 @@ class ConfigureAppServiceProvider extends Action
         $this->executeTask(
             task: fn () => copy(
                 __DIR__.'/../../stubs/commons/console.php',
-                app_path('routes/console.php'),
+                base_path('routes/console.php'),
             ),
             success: 'Console routes copied successfully',
             failure: 'Could not copy the console routes stub',

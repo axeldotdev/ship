@@ -11,7 +11,7 @@ class ConfigureEnvExampleForProduction extends Action
         $this->replaceInFile(
             file: base_path('.env'),
             replacements: [
-                'APP_NAME=Laravel' => "APP_NAME={$appName}",
+                'APP_NAME=Laravel' => "APP_NAME=\"{$appName}\"",
                 'LOG_STACK=single' => 'LOG_STACK=daily',
             ],
             success: '.env updated successfully',
@@ -21,7 +21,7 @@ class ConfigureEnvExampleForProduction extends Action
         $this->replaceInFile(
             file: base_path('.env.example'),
             replacements: [
-                'APP_NAME=Laravel' => "APP_NAME={$appName}",
+                'APP_NAME=Laravel' => "APP_NAME=\"{$appName}\"",
                 'APP_ENV=local' => 'APP_ENV=prod',
                 'APP_DEBUG=true' => 'APP_DEBUG=false',
                 'LOG_STACK=single' => 'LOG_STACK=daily',

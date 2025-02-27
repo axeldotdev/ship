@@ -108,8 +108,8 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: resource_path('views/components/settings/layout.blade.php'),
             replacements: [
-                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>Password</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>Password</flux:navlist.item>
-            <flux:navlist.item href="{{ route(\'settings.sessions\') }}" wire:navigate>Sessions</flux:navlist.item>',
+                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+            <flux:navlist.item href="{{ route(\'settings.sessions\') }}" wire:navigate>{{ __(\'Sessions\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',
             failure: 'Could not update the settings layout',
@@ -145,6 +145,16 @@ use App\Concerns\HasSession;',
 
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
     Route::put('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.delete');",
+            ],
+            success: 'settings sessions route added successfully',
+            failure: 'Could not add the settings sessions route',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
+    use App\Http\Controllers\Settings\SessionController;",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',

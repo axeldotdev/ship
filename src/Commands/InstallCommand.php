@@ -207,6 +207,10 @@ class InstallCommand extends Command implements PromptsForMissingInput
 
     public function runDatabaseMigrations(): void
     {
+        if (! $this->option('tenant')) {
+            return;
+        }
+
         if (confirm('New database migrations were added. Would you like to re-run your migrations?', true)) {
             (new Process([$this->phpBinary(), 'artisan', 'migrate:fresh', '--force'], base_path()))
                 ->setTimeout(null)

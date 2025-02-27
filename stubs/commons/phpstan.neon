@@ -8,8 +8,6 @@ parameters:
 
     paths:
         - app
-        - config
-        - bootstrap
-        - database/factories
+        - database
         - resources/views
         - routes

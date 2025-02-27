@@ -63,8 +63,8 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: resource_path('views/components/settings/layout.blade.php'),
             replacements: [
-                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>Password</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>Password</flux:navlist.item>
-            <flux:navlist.item href="{{ route(\'settings.api-tokens\') }}" wire:navigate>API tokens</flux:navlist.item>',
+                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+            <flux:navlist.item href="{{ route(\'settings.api-tokens\') }}" wire:navigate>{{ __(\'API tokens\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',
             failure: 'Could not update the settings layout',
@@ -101,6 +101,16 @@ Schedule::command('sanctum:prune-expired')->daily();",
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
     Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');",
+            ],
+            success: 'settings api tokens route added successfully',
+            failure: 'Could not add the settings api tokens route',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
+    use App\Http\Controllers\Settings\ApiTokenController;",
             ],
             success: 'settings api tokens route added successfully',
             failure: 'Could not add the settings api tokens route',

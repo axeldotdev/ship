@@ -79,7 +79,7 @@ new class extends Component
             </div>
         @endif
 
-        <div class="flex items-center mt-5">
+        <div class="flex items-center mt-5 gap-4">
             <flux:modal.trigger name="confirm-sessions-logout">
                 <flux:button>
                     {{ __('Log Out Other Browser Sessions') }}
