@@ -13,6 +13,7 @@ class InstallContentSecurityPolicy extends Action
         match ($this->command->argument('stack')) {
             'no-starter', 'livewire' => $this->configureLivewireMiddleware(),
             'react', 'vue' => $this->configureInertiaMiddleware(),
+            default => throw new \RuntimeException('Invalid stack'),
         };
 
         $this->publishConfig();

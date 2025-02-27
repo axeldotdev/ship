@@ -2,11 +2,11 @@
 
 namespace Axeldotdev\Ship\Actions;
 
-use Illuminate\Console\Command;
+use Axeldotdev\Ship\Commands\InstallCommand;
 
 abstract class Action
 {
-    public function __construct(public Command $command) {}
+    public function __construct(public InstallCommand $command) {}
 
     abstract public function handle(): void;
 

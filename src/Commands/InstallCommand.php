@@ -6,11 +6,11 @@ use Axeldotdev\Ship\Actions;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Filesystem\Filesystem;
-use Illuminate\Support\Process\PhpExecutableFinder;
 use RuntimeException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 
 use function Laravel\Prompts\confirm;
@@ -29,7 +29,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
                                       {--api : Install the API management resources and Sanctum}
                                       {--csp : Install the Content Security Policy package from Spatie}
                                       {--larastan : Install Larastan for static analysis}
-                                      {--pest : Indicates if Pest should be installed}
                                       {--rector : Install Rector for code refactoring}
                                       {--socialite : Install Laravel Socialite for OAuth}
                                       {--sessions : Install the way to manage sessions for users}';
@@ -102,12 +101,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 validate: ['required', 'string'],
             ));
         }
-
-        $input->setOption('pest', select(
-            label: 'Which testing framework do you prefer?',
-            options: ['Pest', 'PHPUnit'],
-            default: 'Pest',
-        ) === 'Pest');
     }
 
     public function ensureDirectoryExists(string $directory): void
