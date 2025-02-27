@@ -20,7 +20,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function Sessions({sessions}: {sessions: Array<{id: number; agent: {platform: string; browser: string; is_desktop: boolean;}; ip_address: string; last_active: string; is_current_device: boolean;}>;}) {
+export default function Sessions({status, sessions}: {status?: string; sessions: Array<{id: number; agent: {platform: string; browser: string; is_desktop: boolean;}; ip_address: string; last_active: string; is_current_device: boolean;}>;}) {
     const [sessionsDeletion, setSessionsDeletion] = useState<boolean>(false);
 
     const form = useForm({

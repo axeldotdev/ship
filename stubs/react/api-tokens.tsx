@@ -19,7 +19,7 @@ const breadcrumbs: BreadcrumbItem[] = [
     },
 ];
 
-export default function ApiTokens({tokens}: {tokens: Array<{id: number; name: string; last_used_ago: string;}>}) {
+export default function ApiTokens({status, tokens}: {status?: string; tokens: Array<{id: number; name: string; last_used_ago: string;}>}) {
     const page = usePage<SharedData>();
     const plainTextToken = (page.props.flash as { token?: string })?.token;
 
