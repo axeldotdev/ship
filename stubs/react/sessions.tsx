@@ -128,7 +128,7 @@ export default function Sessions({status, sessions}: {status?: string; sessions:
                                 </div>
 
                                 <DialogFooter>
-                                    <DialogClose as-child>
+                                    <DialogClose asChild>
                                         <Button onClick={closeModal} variant="secondary" type="button">
                                             Cancel
                                         </Button>

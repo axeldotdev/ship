@@ -142,7 +142,7 @@ use App\Concerns\HasSession;',
                 "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
-    Route::put('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.delete');",
+    Route::delete('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.destroy');",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',

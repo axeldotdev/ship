@@ -171,7 +171,7 @@ export default function ApiTokens({status, tokens}: {status?: string; tokens: Ar
                                         </div>
 
                                         <DialogFooter>
-                                            <DialogClose as-child>
+                                            <DialogClose asChild>
                                                 <Button onClick={closeModal} variant="secondary" type="button">
                                                     Cancel
                                                 </Button>
