@@ -6,7 +6,6 @@ use App\Support\Agent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Carbon;
 
 class Session extends Model
 {
@@ -25,7 +24,7 @@ class Session extends Model
     /** @return Attribute<mixed, mixed> */
     public function lastActive(): Attribute
     {
-        return new Attribute(fn (): string => Carbon::createFromTimestamp($this->last_activity)->diffForHumans());
+        return new Attribute(fn (): string => $this->last_activity->diffForHumans());
     }
 
     /** @return BelongsTo<User, $this> */

@@ -29,7 +29,17 @@ class ConfigureAppLogoName extends Action
         );
     }
 
-    protected function configureReactComponent(): void {}
+    protected function configureReactComponent(): void
+    {
+        $this->replaceInFile(
+            file: resource_path('js/components/app-logo.tsx'),
+            replacements: [
+                'Laravel Starter Kit' => str(basename(base_path()))->replace('-', ' ')->title(),
+            ],
+            success: 'App logo updated successfully',
+            failure: 'Could not update the app logo',
+        );
+    }
 
     protected function configureVueComponent(): void
     {

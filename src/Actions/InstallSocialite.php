@@ -16,6 +16,10 @@ class InstallSocialite extends Action
             failure: 'Could not install the laravel/socialite package',
         );
 
+        if ($this->command->argument('stack') === 'no-starter') {
+            return;
+        }
+
         // TODO: configure socialite (routes, controller, etc.) for the selected stack
     }
 }

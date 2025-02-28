@@ -29,7 +29,7 @@ class InstallContentSecurityPolicy extends Action
         //
     })' => '->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
-            \Spatie\Csp\AddCspHeaders::class,
+            // \Spatie\Csp\AddCspHeaders::class,
         ]);
     })',
             ],
