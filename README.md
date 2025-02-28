@@ -15,24 +15,25 @@ He also made a demo of the new starter kits for Livewire, React and Vue. They ar
 
 - Configure our `AppServiceProvider` (immutable dates, vite prefetching, password rules, etc.)
 - Change the `COOKIE_SESSION` env variable to an uuid
-- Remove Laravel config files (optionable)
-- Configure **Content Security Policy** with the [Spatie package](https://github.com/spatie/laravel-csp)
-- Configure a **api management** feature with Sanctum for your users (like we have on Jetstream)
-- Configure a **sessions management** feature for your users (like we have on Jetstream)
-- Configure a **tenant management** feature for your users (like we have on Jetstream but you can choose the name of the model)
-- Install [Larastan](https://github.com/larastan/larastan) already configured
-- Install [Rector](https://github.com/rectorphp/rector) already configured
+- Change the layout logo name from "Laravel Starter kit" to your app name
+- Ready the .env.example for production
+- Remove Laravel config files *(optionable)*
+- Add the session flash data to the Inertia middleware when using React or Vue
+- Configure **Content Security Policy** with the [Spatie package](https://github.com/spatie/laravel-csp) *(optionable)*
+- Configure **API management** feature with Sanctum for your users (like we have on Jetstream) *(optionable)*
+- Configure a **sessions management** feature for your users (like we have on Jetstream) *(optionable)*
+- Configure a **tenant management** feature for your users (like we have on Jetstream but you can choose the name of the model) *(optionable)*
+- Install [Socialite](https://github.com/laravel/socialite) *(optionable)*
+- Install [Larastan](https://github.com/larastan/larastan) already configured *(optionable)*
+- Install [Rector](https://github.com/rectorphp/rector) already configured *(optionable)*
 
 Every files are dropped in our applications, **Ship** is just an installation command with some stubs.
-
-> [!WARNING]
-> **Ship** is not complete yet. It contains only backend stuff but I intend to propose frontend for each stacks of the new starter kits when they'll be launched.
 
 ## Coming soon
 
 - Tests with Pest and PHPUnit
-- oAuth connection with Socialite
-- Two Way Authentication
+- Views in Livewire, React and Vue for Socialite connections
+- Two Factor Authentication
 
 If you have more ideas don't hesitate to write an issue or even write a pull request, I would be glad to discuss about it.
 
