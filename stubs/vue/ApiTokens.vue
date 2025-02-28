@@ -14,7 +14,6 @@ import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 
 interface Props {
-    className?: string;
     status?: string;
     tokens: Array<{
         id: number;
@@ -32,8 +31,8 @@ const breadcrumbItems: BreadcrumbItem[] = [
     },
 ];
 
-const displayingToken = ref(false);
-const deletingToken = ref(false);
+const displayingToken = ref<boolean>(false);
+const deletingToken = ref<boolean>(false);
 const apiTokenBeingDeleted = ref<number | null>(null);
 
 const page = usePage<SharedData>();
@@ -94,7 +93,7 @@ const closeModal = () => {
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="createForm.processing">
+                        <Button :disabled="createForm.processing" type="submit">
                             Create
                         </Button>
 
@@ -120,7 +119,7 @@ const closeModal = () => {
                             </DialogHeader>
 
                             <div class="grid gap-2">
-                                <Label for="password" class="sr-only">
+                                <Label for="api_token_plaintext_token" class="sr-only">
                                     API token
                                 </Label>
                                 <Input :defaultValue="page.props.flash?.token" id="api_token_plaintext_token" name="plaintext_token" readonly autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
@@ -143,7 +142,7 @@ const closeModal = () => {
                                     Last used {{ token.last_used_ago }}
                                 </div>
 
-                                <Button @click="confirmApiTokenDeletion(token.id)" variant="destructive" size="sm">
+                                <Button @click="confirmApiTokenDeletion(token.id)" variant="destructive" size="sm" type="button">
                                     Delete
                                 </Button>
                             </div>
@@ -173,7 +172,9 @@ const closeModal = () => {
 
                                 <DialogFooter>
                                     <DialogClose as-child>
-                                        <Button variant="secondary" @click="closeModal"> Cancel </Button>
+                                        <Button @click="closeModal" variant="secondary" type="button">
+                                            Cancel
+                                        </Button>
                                     </DialogClose>
 
                                     <Button type="submit" variant="destructive" :disabled="deleteForm.processing">

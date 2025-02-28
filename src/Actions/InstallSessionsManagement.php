@@ -116,7 +116,66 @@ use App\Concerns\HasSession;',
         );
     }
 
-    protected function publishReactViews(): void {}
+    protected function publishReactViews(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/react/SessionController.php',
+                app_path('Http/Controllers/Settings/SessionController.php'),
+            ),
+            success: 'settings sessions controller copied successfully',
+            failure: 'Could not copy the settings sessions controller',
+        );
+
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/react/sessions.tsx',
+                resource_path('js/pages/settings/sessions.tsx'),
+            ),
+            success: 'settings sessions view copied successfully',
+            failure: 'Could not copy the settings sessions view',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+
+    Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
+    Route::delete('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.destroy');",
+            ],
+            success: 'settings sessions route added successfully',
+            failure: 'Could not add the settings sessions route',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/settings.php'),
+            replacements: [
+                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
+    use App\Http\Controllers\Settings\SessionController;",
+            ],
+            success: 'settings sessions route added successfully',
+            failure: 'Could not add the settings sessions route',
+        );
+
+        $this->replaceInFile(
+            file: resource_path('js/layouts/settings/layout.tsx'),
+            replacements: [
+                "url: '/settings/password',
+        icon: null,
+    }," => "url: '/settings/password',
+        icon: null,
+    },
+    {
+        title: 'Sessions',
+        url: '/settings/sessions',
+        icon: null,
+    },",
+            ],
+            success: 'settings layout updated successfully',
+            failure: 'Could not update the settings layout',
+        );
+    }
 
     protected function publishVueViews(): void
     {
