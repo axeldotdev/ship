@@ -23,6 +23,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
 {
     /** @var string */
     public $signature = 'ship:install {stack : The development stack that should be installed (no-starter,livewire,react,vue)}
+                                      {--workos : Indicates if you use WorkOS}
                                       {--tenant : Indicates if you want to install the tenant model}
                                       {--tenantModel= : The name of the tenant model}
                                       {--delete-configs : Indicates if the default Laravel config files should be deleted}
@@ -45,6 +46,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
         Actions\ConfigureAppLogoName::class,
         Actions\ConfigureSessionCookie::class,
         Actions\DeleteConfigFiles::class,
+        Actions\ConfigureWorkOS::class,
         Actions\InstallInertiaMiddlewareFlash::class,
         Actions\InstallApiManagement::class,
         Actions\InstallContentSecurityPolicy::class,
@@ -77,6 +79,11 @@ class InstallCommand extends Command implements PromptsForMissingInput
         InputInterface $input,
         OutputInterface $output,
     ): void {
+        $input->setOption('workos', confirm(
+            label: 'Do you use WorkOS Authkit?',
+            default: false,
+        ));
+
         $input->setOption('delete-configs', confirm(
             label: 'Would you like to delete the default Laravel config files?',
             default: true,
@@ -90,7 +97,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
                 'larastan' => 'Larastan',
                 'rector' => 'Rector',
                 'sessions' => 'Sessions management',
-                'socialite' => 'Socialite (SSO)',
+                'socialite' => 'Socialite (Don\'t install it if you use WorkOS)',
                 'tenant' => 'Tenant model',
             ],
         ))->each(fn ($option) => $input->setOption($option, true));

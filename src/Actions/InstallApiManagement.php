@@ -12,6 +12,8 @@ class InstallApiManagement extends Action
 
         $this->command->runArtisanCommand(['install:api']);
 
+        $this->command->filesystem()->delete(config_path('sanctum.php'));
+
         $this->publishCommand();
         $this->publishTrait();
 
@@ -53,7 +55,7 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: base_path('routes/web.php'),
             replacements: [
-                "Volt::route('settings/password', 'settings.password')->name('settings.password');" => "Volt::route('settings/password', 'settings.password')->name('settings.password');
+                "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');" => "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/api-tokens', 'settings.api-tokens')->name('settings.api-tokens');",
             ],
             success: 'settings api tokens route added successfully',
@@ -94,7 +96,7 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+                "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');" => "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
@@ -107,8 +109,8 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
-    use App\Http\Controllers\Settings\ApiTokenController;",
+                "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\ApiTokenController;",
             ],
             success: 'settings api tokens route added successfully',
             failure: 'Could not add the settings api tokens route',
@@ -156,7 +158,7 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+                "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');" => "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
@@ -169,8 +171,8 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
-    use App\Http\Controllers\Settings\ApiTokenController;",
+                "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\ApiTokenController;",
             ],
             success: 'settings api tokens route added successfully',
             failure: 'Could not add the settings api tokens route',

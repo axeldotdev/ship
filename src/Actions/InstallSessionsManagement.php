@@ -98,7 +98,7 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: base_path('routes/web.php'),
             replacements: [
-                "Volt::route('settings/password', 'settings.password')->name('settings.password');" => "Volt::route('settings/password', 'settings.password')->name('settings.password');
+                "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');" => "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
     Volt::route('settings/sessions', 'settings.sessions')->name('settings.sessions');",
             ],
             success: 'settings sessions route added successfully',
@@ -139,7 +139,7 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+                "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');" => "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
     Route::delete('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.destroy');",
@@ -151,8 +151,8 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
-    use App\Http\Controllers\Settings\SessionController;",
+                "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\SessionController;",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',
@@ -200,10 +200,10 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');" => "Route::put('settings/password', [PasswordController::class, 'update'])->name('password.update');
+                "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');" => "Route::delete('settings/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
-    Route::put('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.delete');",
+    Route::delete('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.destroy');",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',
@@ -212,8 +212,8 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: base_path('routes/settings.php'),
             replacements: [
-                "use App\Http\Controllers\Settings\PasswordController;" => "use App\Http\Controllers\Settings\PasswordController;
-    use App\Http\Controllers\Settings\SessionController;",
+                "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
+use App\Http\Controllers\Settings\SessionController;",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',

@@ -44,7 +44,7 @@ class InstallContentSecurityPolicy extends Action
             file: base_path('bootstrap/app.php'),
             replacements: [
                 'AddLinkHeadersForPreloadedAssets::class,' => 'AddLinkHeadersForPreloadedAssets::class,
-            \Spatie\Csp\AddCspHeaders::class,',
+            // \Spatie\Csp\AddCspHeaders::class,',
             ],
             success: 'CSP headers middlweware added successfully',
             failure: 'Could not add the CSP headers middleware',
