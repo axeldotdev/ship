@@ -25,6 +25,7 @@ class InstallApiManagement extends Action
             'livewire' => $this->publishLivewireViews(),
             'react' => $this->publishReactViews(),
             'vue' => $this->publishVueViews(),
+            default => throw new \RuntimeException('Invalid stack'),
         };
     }
 
