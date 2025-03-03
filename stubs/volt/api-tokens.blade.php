@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Collection;
 use Livewire\Volt\Component;
 
 new class extends Component
@@ -12,13 +11,6 @@ new class extends Component
     public $apiTokenIdBeingDeleted;
 
     public $plainTextToken = '';
-
-    public Collection $tokens;
-
-    public function mount(): void
-    {
-        $this->tokens = Auth::user()->tokens;
-    }
 
     public function confirmApiTokenDeletion(int $apiTokenId): void
     {
