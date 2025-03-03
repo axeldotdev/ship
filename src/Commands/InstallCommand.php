@@ -24,6 +24,7 @@ class InstallCommand extends Command implements PromptsForMissingInput
     /** @var string */
     public $signature = 'ship:install {stack : The development stack that should be installed (no-starter,livewire,react,vue)}
                                       {--workos : Indicates if you use WorkOS}
+                                      {--volt : Indicates if you want to install the Volt}
                                       {--tenant : Indicates if you want to install the tenant model}
                                       {--tenantModel= : The name of the tenant model}
                                       {--delete-configs : Indicates if the default Laravel config files should be deleted}
@@ -79,6 +80,13 @@ class InstallCommand extends Command implements PromptsForMissingInput
         InputInterface $input,
         OutputInterface $output,
     ): void {
+        if ($this->argument('stack') === 'livewire') {
+            $input->setOption('volt', confirm(
+                label: 'Do you use Volt?',
+                default: true,
+            ));
+        }
+
         $input->setOption('workos', confirm(
             label: 'Do you use WorkOS Authkit?',
             default: false,

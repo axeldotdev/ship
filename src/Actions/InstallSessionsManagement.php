@@ -19,7 +19,10 @@ class InstallSessionsManagement extends Action
         }
 
         match ($this->command->argument('stack')) {
-            'livewire' => $this->publishLivewireViews(),
+            'livewire' => match ($this->command->option('volt')) {
+                true => $this->publishVoltViews(),
+                false => $this->publishLivewireViews(),
+            },
             'react' => $this->publishReactViews(),
             'vue' => $this->publishVueViews(),
         };
@@ -88,6 +91,15 @@ use App\Concerns\HasSession;',
     {
         $this->executeTask(
             task: fn () => copy(
+                __DIR__.'/../../stubs/livewire/Sessions.php',
+                app_path('Livewire/Settings/Sessions.php'),
+            ),
+            success: 'settings session class copied successfully',
+            failure: 'Could not copy the settings session class',
+        );
+
+        $this->executeTask(
+            task: fn () => copy(
                 __DIR__.'/../../stubs/livewire/sessions.blade.php',
                 resource_path('views/livewire/settings/sessions.blade.php'),
             ),
@@ -98,8 +110,10 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: base_path('routes/web.php'),
             replacements: [
-                "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');" => "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/sessions', 'settings.sessions')->name('settings.sessions');",
+                "Route::get('settings/profile', Profile::class)->name('settings.profile');" => "Route::get('settings/profile', Profile::class)->name('settings.profile');
+    Route::get('settings/sessions', Sessions::class)->name('settings.sessions');",
+                "use App\Livewire\Settings\Profile;" => "use App\Livewire\Settings\Profile;
+use App\Livewire\Settings\Sessions;",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',
@@ -108,7 +122,7 @@ use App\Concerns\HasSession;',
         $this->replaceInFile(
             file: resource_path('views/components/settings/layout.blade.php'),
             replacements: [
-                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+                '<flux:navlist.item :href="route(\'settings.profile\')" wire:navigate>{{ __(\'Profile\') }}</flux:navlist.item>' => '<flux:navlist.item :href="route(\'settings.profile\')" wire:navigate>{{ __(\'Profile\') }}</flux:navlist.item>
             <flux:navlist.item href="{{ route(\'settings.sessions\') }}" wire:navigate>{{ __(\'Sessions\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',
@@ -143,14 +157,6 @@ use App\Concerns\HasSession;',
 
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
     Route::delete('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.destroy');",
-            ],
-            success: 'settings sessions route added successfully',
-            failure: 'Could not add the settings sessions route',
-        );
-
-        $this->replaceInFile(
-            file: base_path('routes/settings.php'),
-            replacements: [
                 "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SessionController;",
             ],
@@ -171,6 +177,38 @@ use App\Http\Controllers\Settings\SessionController;",
         url: '/settings/sessions',
         icon: null,
     },",
+            ],
+            success: 'settings layout updated successfully',
+            failure: 'Could not update the settings layout',
+        );
+    }
+
+    protected function publishVoltViews(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/volt/sessions.blade.php',
+                resource_path('views/livewire/settings/sessions.blade.php'),
+            ),
+            success: 'settings sessions view copied successfully',
+            failure: 'Could not copy the settings sessions view',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/web.php'),
+            replacements: [
+                "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');" => "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+    Volt::route('settings/sessions', 'settings.sessions')->name('settings.sessions');",
+            ],
+            success: 'settings sessions route added successfully',
+            failure: 'Could not add the settings sessions route',
+        );
+
+        $this->replaceInFile(
+            file: resource_path('views/components/settings/layout.blade.php'),
+            replacements: [
+                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+            <flux:navlist.item href="{{ route(\'settings.sessions\') }}" wire:navigate>{{ __(\'Sessions\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',
             failure: 'Could not update the settings layout',
@@ -204,14 +242,6 @@ use App\Http\Controllers\Settings\SessionController;",
 
     Route::get('settings/sessions', [SessionController::class, 'index'])->name('sessions.index');
     Route::delete('settings/sessions', [SessionController::class, 'destroy'])->name('sessions.destroy');",
-            ],
-            success: 'settings sessions route added successfully',
-            failure: 'Could not add the settings sessions route',
-        );
-
-        $this->replaceInFile(
-            file: base_path('routes/settings.php'),
-            replacements: [
                 "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\SessionController;",
             ],
