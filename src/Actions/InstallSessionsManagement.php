@@ -91,8 +91,8 @@ use App\Concerns\HasSession;',
     {
         $this->executeTask(
             task: fn () => copy(
-                __DIR__.'/../../stubs/livewire/Session.php',
-                app_path('Livewire/Settings/Session.php'),
+                __DIR__.'/../../stubs/livewire/Sessions.php',
+                app_path('Livewire/Settings/Sessions.php'),
             ),
             success: 'settings session class copied successfully',
             failure: 'Could not copy the settings session class',

@@ -48,8 +48,8 @@ Schedule::command('sanctum:prune-expired')->daily();",
     {
         $this->executeTask(
             task: fn () => copy(
-                __DIR__.'/../../stubs/livewire/ApiToken.php',
-                app_path('Livewire/Settings/ApiToken.php'),
+                __DIR__.'/../../stubs/livewire/ApiTokens.php',
+                app_path('Livewire/Settings/ApiTokens.php'),
             ),
             success: 'settings api tokens class copied successfully',
             failure: 'Could not copy the settings api tokens class',
