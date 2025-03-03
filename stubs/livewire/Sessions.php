@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Session extends Component
+class Sessions extends Component
 {
     public string $password = '';
 

@@ -111,9 +111,9 @@ use App\Concerns\HasSession;',
             file: base_path('routes/web.php'),
             replacements: [
                 "Route::get('settings/profile', Profile::class)->name('settings.profile');" => "Route::get('settings/profile', Profile::class)->name('settings.profile');
-    Route::get('settings/sessions', Session::class)->name('settings.sessions');",
+    Route::get('settings/sessions', Sessions::class)->name('settings.sessions');",
                 "use App\Livewire\Settings\Profile;" => "use App\Livewire\Settings\Profile;
-use App\Livewire\Settings\Session;",
+use App\Livewire\Settings\Sessions;",
             ],
             success: 'settings sessions route added successfully',
             failure: 'Could not add the settings sessions route',
@@ -122,7 +122,7 @@ use App\Livewire\Settings\Session;",
         $this->replaceInFile(
             file: resource_path('views/components/settings/layout.blade.php'),
             replacements: [
-                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+                '<flux:navlist.item :href="route(\'settings.profile\')" wire:navigate>{{ __(\'Profile\') }}</flux:navlist.item>' => '<flux:navlist.item :href="route(\'settings.profile\')" wire:navigate>{{ __(\'Profile\') }}</flux:navlist.item>
             <flux:navlist.item href="{{ route(\'settings.sessions\') }}" wire:navigate>{{ __(\'Sessions\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',

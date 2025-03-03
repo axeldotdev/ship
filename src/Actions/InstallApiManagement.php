@@ -68,9 +68,9 @@ Schedule::command('sanctum:prune-expired')->daily();",
             file: base_path('routes/web.php'),
             replacements: [
                 "Route::get('settings/profile', Profile::class)->name('settings.profile');" => "Route::get('settings/profile', Profile::class)->name('settings.profile');
-    Route::get('settings/api-tokens', ApiToken::class)->name('settings.api-tokens');",
+    Route::get('settings/api-tokens', ApiTokens::class)->name('settings.api-tokens');",
                 "use App\Livewire\Settings\Profile;" => "use App\Livewire\Settings\Profile;
-use App\Livewire\Settings\ApiToken;",
+use App\Livewire\Settings\ApiTokens;",
             ],
             success: 'settings api tokens route added successfully',
             failure: 'Could not add the settings api tokens route',
@@ -79,7 +79,7 @@ use App\Livewire\Settings\ApiToken;",
         $this->replaceInFile(
             file: resource_path('views/components/settings/layout.blade.php'),
             replacements: [
-                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+                '<flux:navlist.item :href="route(\'settings.profile\')" wire:navigate>{{ __(\'Profile\') }}</flux:navlist.item>' => '<flux:navlist.item :href="route(\'settings.profile\')" wire:navigate>{{ __(\'Profile\') }}</flux:navlist.item>
             <flux:navlist.item href="{{ route(\'settings.api-tokens\') }}" wire:navigate>{{ __(\'API tokens\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',

@@ -4,7 +4,7 @@ namespace App\Livewire\Settings;
 
 use Livewire\Component;
 
-class ApiToken extends Component
+class ApiTokens extends Component
 {
     public string $name = '';
 
