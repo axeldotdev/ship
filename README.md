@@ -13,6 +13,7 @@ He also made a demo of the new starter kits for Livewire, React and Vue. They ar
 
 ## What Ship can do for us?
 
+- Choose the right stack (livewire, react, volt, vue)
 - Configure our `AppServiceProvider` (immutable dates, vite prefetching, password rules, etc.)
 - Change the `COOKIE_SESSION` env variable to an uuid
 - Change the layout logo name from "Laravel Starter kit" to your app name
