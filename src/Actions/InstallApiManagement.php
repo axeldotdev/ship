@@ -22,7 +22,10 @@ class InstallApiManagement extends Action
         }
 
         match ($this->command->argument('stack')) {
-            'livewire' => $this->publishLivewireViews(),
+            'livewire' => match ($this->command->option('volt')) {
+                true => $this->publishVoltViews(),
+                false => $this->publishLivewireViews(),
+            },
             'react' => $this->publishReactViews(),
             'vue' => $this->publishVueViews(),
         };
@@ -45,6 +48,15 @@ Schedule::command('sanctum:prune-expired')->daily();",
     {
         $this->executeTask(
             task: fn () => copy(
+                __DIR__.'/../../stubs/livewire/ApiToken.php',
+                app_path('Livewire/Settings/ApiToken.php'),
+            ),
+            success: 'settings api tokens class copied successfully',
+            failure: 'Could not copy the settings api tokens class',
+        );
+
+        $this->executeTask(
+            task: fn () => copy(
                 __DIR__.'/../../stubs/livewire/api-tokens.blade.php',
                 resource_path('views/livewire/settings/api-tokens.blade.php'),
             ),
@@ -55,8 +67,10 @@ Schedule::command('sanctum:prune-expired')->daily();",
         $this->replaceInFile(
             file: base_path('routes/web.php'),
             replacements: [
-                "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');" => "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
-    Volt::route('settings/api-tokens', 'settings.api-tokens')->name('settings.api-tokens');",
+                "Route::get('settings/profile', Profile::class)->name('settings.profile');" => "Route::get('settings/profile', Profile::class)->name('settings.profile');
+    Route::get('settings/api-tokens', ApiToken::class)->name('settings.api-tokens');",
+                "use App\Livewire\Settings\Profile;" => "use App\Livewire\Settings\Profile;
+use App\Livewire\Settings\ApiToken;",
             ],
             success: 'settings api tokens route added successfully',
             failure: 'Could not add the settings api tokens route',
@@ -101,14 +115,6 @@ Schedule::command('sanctum:prune-expired')->daily();",
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
     Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');",
-            ],
-            success: 'settings api tokens route added successfully',
-            failure: 'Could not add the settings api tokens route',
-        );
-
-        $this->replaceInFile(
-            file: base_path('routes/settings.php'),
-            replacements: [
                 "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\ApiTokenController;",
             ],
@@ -129,6 +135,38 @@ use App\Http\Controllers\Settings\ApiTokenController;",
         url: '/settings/api-tokens',
         icon: null,
     },",
+            ],
+            success: 'settings layout updated successfully',
+            failure: 'Could not update the settings layout',
+        );
+    }
+
+    protected function publishVoltViews(): void
+    {
+        $this->executeTask(
+            task: fn () => copy(
+                __DIR__.'/../../stubs/volt/api-tokens.blade.php',
+                resource_path('views/livewire/settings/api-tokens.blade.php'),
+            ),
+            success: 'settings api tokens view copied successfully',
+            failure: 'Could not copy the settings api tokens view',
+        );
+
+        $this->replaceInFile(
+            file: base_path('routes/web.php'),
+            replacements: [
+                "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');" => "Volt::route('settings/profile', 'settings.profile')->name('settings.profile');
+    Volt::route('settings/api-tokens', 'settings.api-tokens')->name('settings.api-tokens');",
+            ],
+            success: 'settings api tokens route added successfully',
+            failure: 'Could not add the settings api tokens route',
+        );
+
+        $this->replaceInFile(
+            file: resource_path('views/components/settings/layout.blade.php'),
+            replacements: [
+                '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>' => '<flux:navlist.item href="{{ route(\'settings.password\') }}" wire:navigate>{{ __(\'Password\') }}</flux:navlist.item>
+            <flux:navlist.item href="{{ route(\'settings.api-tokens\') }}" wire:navigate>{{ __(\'API tokens\') }}</flux:navlist.item>',
             ],
             success: 'settings layout updated successfully',
             failure: 'Could not update the settings layout',
@@ -163,14 +201,6 @@ use App\Http\Controllers\Settings\ApiTokenController;",
     Route::get('settings/api-tokens', [ApiTokenController::class, 'index'])->name('api-tokens.index');
     Route::post('settings/api-tokens', [ApiTokenController::class, 'store'])->name('api-tokens.store');
     Route::delete('settings/api-tokens/{token}', [ApiTokenController::class, 'destroy'])->name('api-tokens.destroy');",
-            ],
-            success: 'settings api tokens route added successfully',
-            failure: 'Could not add the settings api tokens route',
-        );
-
-        $this->replaceInFile(
-            file: base_path('routes/settings.php'),
-            replacements: [
                 "use App\Http\Controllers\Settings\ProfileController;" => "use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\ApiTokenController;",
             ],
