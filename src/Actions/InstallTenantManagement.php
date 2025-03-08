@@ -97,7 +97,7 @@ class InstallTenantManagement extends Action
 
     protected function publishTrait(): void
     {
-        $this->command->ensureDirectoryExists(app_path('Concerns'));
+        $this->ensureDirectoryExists(app_path('Concerns'));
 
         $this->executeTask(
             task: fn () => copy(

@@ -62,7 +62,7 @@ class InstallContentSecurityPolicy extends Action
 
     protected function publishConfig(): void
     {
-        $this->command->ensureDirectoryExists(base_path('config'));
+        $this->ensureDirectoryExists(base_path('config'));
 
         $this->executeTask(
             task: fn () => copy(__DIR__.'/../../stubs/commons/csp.php', config_path('csp.php')),
@@ -73,7 +73,7 @@ class InstallContentSecurityPolicy extends Action
 
     protected function publishPolicy(): void
     {
-        $this->command->ensureDirectoryExists(app_path('Support'));
+        $this->ensureDirectoryExists(app_path('Support'));
 
         $this->executeTask(
             task: fn () => copy(

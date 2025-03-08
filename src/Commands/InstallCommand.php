@@ -125,11 +125,6 @@ class InstallCommand extends Command implements PromptsForMissingInput
         ) === 'Pest');
     }
 
-    public function ensureDirectoryExists(string $directory): void
-    {
-        $this->filesystem()->ensureDirectoryExists($directory);
-    }
-
     public function filesystem(): Filesystem
     {
         return $this->filesystem ??= new Filesystem;

@@ -30,7 +30,7 @@ class InstallSessionsManagement extends Action
 
     protected function publishAgent(): void
     {
-        $this->command->ensureDirectoryExists(app_path('Support'));
+        $this->ensureDirectoryExists(app_path('Support'));
 
         $this->executeTask(
             task: fn () => copy(
@@ -62,7 +62,7 @@ class InstallSessionsManagement extends Action
 
     protected function publishTrait(): void
     {
-        $this->command->ensureDirectoryExists(app_path('Concerns'));
+        $this->ensureDirectoryExists(app_path('Concerns'));
 
         $this->executeTask(
             task: fn () => copy(

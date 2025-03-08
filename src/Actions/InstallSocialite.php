@@ -51,7 +51,27 @@ GOOGLE_REDIRECT="${APP_URL}"/login/google/callback',
             failure: 'Could not add Google OAuth credentials in .env.example',
         );
 
-        // TODO: Fill out /config/services.php
+        if (! $this->command->filesystem()->exists(config_path('services.php'))) {
+            copy(
+                __DIR__.'/../../stubs/commons/services-basic.php',
+                config_path('services.php'),
+            );
+        }
+
+        $this->replaceInFile(
+            file: config_path('services.php'),
+            replacements: [
+                '*/' => "*/
+
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT'),
+    ],",
+            ],
+            success: 'Google OAuth credentials added in services.php successfully',
+            failure: 'Could not add Google OAuth credentials in services.php',
+        );
 
         match ($this->command->argument('stack')) {
             'livewire' => match ($this->command->option('volt')) {
