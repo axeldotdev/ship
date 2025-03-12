@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -25,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->bootCommands();
         $this->bootDates();
+        $this->bootExceptions();
         $this->bootModels();
         $this->bootPassword();
         $this->bootRoutes();
@@ -40,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
     private function bootDates(): void
     {
         Date::use(CarbonImmutable::class);
+    }
+
+    private function bootExceptions(): void
+    {
+        RequestException::dontTruncate();
     }
 
     private function bootModels(): void
