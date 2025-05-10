@@ -28,6 +28,7 @@ class InstallApiManagement extends Action
             },
             'react' => $this->publishReactViews(),
             'vue' => $this->publishVueViews(),
+            default => throw new \RuntimeException('Invalid stack'),
         };
     }
 

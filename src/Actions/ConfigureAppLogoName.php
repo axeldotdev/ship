@@ -14,6 +14,7 @@ class ConfigureAppLogoName extends Action
             'livewire' => $this->configureLivewireComponent(),
             'react' => $this->configureReactComponent(),
             'vue' => $this->configureVueComponent(),
+            default => throw new \RuntimeException('Invalid stack'),
         };
     }
 
