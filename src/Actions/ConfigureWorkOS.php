@@ -10,7 +10,7 @@ class ConfigureWorkOS extends Action
             return;
         }
 
-        $this->command->ensureDirectoryExists(base_path('config'));
+        $this->ensureDirectoryExists(base_path('config'));
 
         $this->executeTask(
             task: fn () => copy(
